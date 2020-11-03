@@ -12,6 +12,7 @@ class CarSensor{
   /*
    * This funcation is called at setup().
    * And it should perform any required initialization of underlying sensor.
+   * Return 0 if succeed. Otherwise, return an error code.
    */
   virtual int init() = 0;
   

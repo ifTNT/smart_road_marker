@@ -4,11 +4,16 @@ void setup() {
   // Initialize the debugging serial port.
   DEBUG_OUT.begin(115200);
 
-  // Initialize the car-sensor.
+  // Initialize the car-sensor and the reporter.
   // If there's any error, print the error message to the debug output.
   if((err = carSensor->init()) != 0){
     DEBUG_OUT.print("Initialitation of car-sensor failed. Error message:");
     DEBUG_OUT.println(carSensor->getErrMessage(err));
+  }
+  
+  if((err = repoter->init()) != 0){
+    DEBUG_OUT.print("Initialitation of repoter failed. Error message:");
+    DEBUG_OUT.println(repoter->getErrMessage(err));
   }
 
   // Initialize last report publishment time to current system time.
@@ -31,7 +36,9 @@ void loop() {
     
     // Get a fresh produced report summary from the car-sensor.
     report_t newReport = carSensor->getReport();
-    
+
+    // Publish the new produced report to backend.
+    // If there's any error, print the error message to the debug output.
     if((err = repoter->publish(newReport)) != 0){
       DEBUG_OUT.print("Publishing the new report failed. Error message:");
       DEBUG_OUT.println(repoter->getErrMessage(err));

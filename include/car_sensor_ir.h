@@ -3,6 +3,11 @@
 
 #include "car_sensor.h"
 
+/*
+ * The implementation class of car-sensor on GP2Y0A02YK0F IR module.
+ * If you want to know the descrption of each function,
+ * reference to car_sensor.h
+ */
 class CarSensorIR: public CarSensor{
   public:
   virtual int init();
