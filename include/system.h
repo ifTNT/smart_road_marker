@@ -11,7 +11,16 @@
 
 // The expeted duration between report transmissions
 // Unit: miliseconds
-#define REPORT_DURATION 30000l;
+#define REPORT_DURATION 30000l
+
+// Define the debug output macro to decopule the debug purpose
+// from the serial port object.
+#define DEBUG_OUT Serial
+
+/* ============================
+ *  External defined varibles
+ * ============================
+ */
 
 // Defination in system.cpp
 extern CarSensor* carSensor;
