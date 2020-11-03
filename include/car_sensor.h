@@ -3,9 +3,6 @@
 
 #include "report.h"
 
-// For String class
-#include <Arduino.h>
-
 /*
  * The interface of car sensor.
  */
@@ -40,7 +37,7 @@ class CarSensor{
   /*
    * Get a human readable error message form given error code
    */
-  virtual String getErrMessage(int) = 0;
+  virtual const char* getErrMessage(int) = 0;
 };
 
 #endif

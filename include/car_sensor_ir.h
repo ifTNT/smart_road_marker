@@ -9,7 +9,7 @@ class CarSensorIR: public CarSensor{
   virtual int updateMeasure();
   virtual report_t getReport();
   virtual int resetMeasure();
-  virtual String getErrMessage(int);
+  virtual const char* getErrMessage(int);
   
   private:
   report_t _currentReport;
