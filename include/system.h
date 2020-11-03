@@ -4,6 +4,7 @@
 #include "car_sensor.h"
 #include "reporter.h"
 #include "report_struct.h"
+#include <SoftwareSerial.h>
 
 /* =========================
  *  Constant section
@@ -16,23 +17,21 @@
 
 // Define the debug output macro to decopule the debug purpose
 // from the serial port object.
-#define DEBUG_OUT Serial
+#define DEBUG_OUT DebugSoftwareSerial
+
+// The buadrate that be used in debug serial port.
+#define DEBUG_SERIAL_BUADRATE 115200
 
 /* ============================
  *  External defined varibles
+ *  Definations in system.cpp
  * ============================
  */
 
-// Defination in system.cpp
 extern CarSensor* carSensor;
-
-// Defination in system.cpp
 extern Repoter* repoter;
-
-// Defination in system.cpp
+extern SoftwareSerial DebugSoftwareSerial;
 extern unsigned long long lastPublishTime;
-
-// Defination in system.cpp
 extern int err;
 
 #endif

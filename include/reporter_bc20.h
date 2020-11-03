@@ -11,9 +11,9 @@
 class ReporterBC20: public Repoter{
   public:
 
-  virtual int init();
-  virtual int publish(report_t);
-  virtual const char* getErrMessage(int);
+  int init();
+  int publish(report_t);
+  const char* getErrMessage(int);
 };
 
 #endif

@@ -1,6 +1,5 @@
 #include "include/reporter_bc20.h"
 
-
 int ReporterBC20::init(){
   return 0;
 }

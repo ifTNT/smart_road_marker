@@ -2,7 +2,7 @@
 
 void setup() {
   // Initialize the debugging serial port.
-  DEBUG_OUT.begin(115200);
+  DEBUG_OUT.begin(DEBUG_SERIAL_BUADRATE);
 
   // Initialize the car-sensor and the reporter.
   // If there's any error, print the error message to the debug output.

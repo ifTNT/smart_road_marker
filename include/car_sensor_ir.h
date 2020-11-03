@@ -10,11 +10,11 @@
  */
 class CarSensorIR: public CarSensor{
   public:
-  virtual int init();
-  virtual int updateMeasure();
-  virtual report_t getReport();
-  virtual int resetMeasure();
-  virtual const char* getErrMessage(int);
+  int init();
+  int updateMeasure();
+  report_t getReport();
+  int resetMeasure();
+  const char* getErrMessage(int);
   
   private:
   report_t _currentReport;

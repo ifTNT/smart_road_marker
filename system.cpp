@@ -13,6 +13,12 @@ CarSensor* carSensor = new CarSensorIR;
 // The reporter that transmit the produced report data to backend.
 Repoter* repoter = new ReporterBC20;
 
+// Assign the software serial port for debugging purpose
+#define DEBUG_SERIAL_RX_PIN 29
+#define DEBUG_SERIAL_TX_PIN 30
+SoftwareSerial DebugSoftwareSerial=
+    SoftwareSerial(DEBUG_SERIAL_RX_PIN, DEBUG_SERIAL_TX_PIN);
+
 /* =========================
  *  Global varible section
  * ========================= 
