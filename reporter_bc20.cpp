@@ -1,5 +1,9 @@
 #include "include/reporter_bc20.h"
 
+ReporterBC20::ReporterBC20(HardwareSerial& port): _port(port){
+
+}
+
 int ReporterBC20::init(){
   return 0;
 }

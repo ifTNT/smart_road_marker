@@ -1,6 +1,7 @@
 #include "include/system.h"
 #include "include/car_sensor_ir.h"
 #include "include/reporter_bc20.h"
+#include <Arduino.h>
 
 /* =========================
  *  System module section
@@ -11,7 +12,7 @@
 CarSensor* carSensor = new CarSensorIR;
 
 // The reporter that transmit the produced report data to backend.
-Repoter* repoter = new ReporterBC20;
+Repoter* repoter = new ReporterBC20(Serial);
 
 // Assign the software serial port for debugging purpose
 #define DEBUG_SERIAL_RX_PIN 29
