@@ -1,7 +1,7 @@
 #ifndef CAR_SENSOR_H
 #define CAR_SENSOR_H
 
-#include "report.h"
+#include "report_struct.h"
 
 /*
  * The interface of car sensor.

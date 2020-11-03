@@ -2,14 +2,15 @@
 #define SMART_ROAD_MARK_SYSTEM_H
 
 #include "car_sensor.h"
-#include "report.h"
+#include "reporter.h"
+#include "report_struct.h"
 
 /* =========================
  *  Constant section
  * =========================
  */
 
-// The expeted duration between report transmissions
+// The expeted duration between report publishment
 // Unit: miliseconds
 #define REPORT_DURATION 30000l
 
@@ -26,6 +27,12 @@
 extern CarSensor* carSensor;
 
 // Defination in system.cpp
-extern unsigned long long lastReportTime;
+extern Repoter* repoter;
+
+// Defination in system.cpp
+extern unsigned long long lastPublishTime;
+
+// Defination in system.cpp
+extern int err;
 
 #endif

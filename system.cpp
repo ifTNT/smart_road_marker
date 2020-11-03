@@ -14,5 +14,8 @@ CarSensor* carSensor = new CarSensorIR;
  * ========================= 
  */
 
-// The system time of last report transmission
-unsigned long long lastReportTime;
+// The system time of last report publishment
+unsigned long long lastPublishTime;
+
+// The error code storage place which is frequently used in the code.
+int err = 0;
