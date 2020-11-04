@@ -1,10 +1,6 @@
 #include "include/system.h"
 
 void setup() {
-  //======== for test ========
-  //Serial initial
-  Serial.begin(115200);
-
   // Initialize the debugging serial port.
   DEBUG_OUT.begin(DEBUG_SERIAL_BUADRATE);
 
@@ -40,11 +36,13 @@ void loop() {
     
     // Get a fresh produced report summary from the car-sensor.
     report_t newReport = carSensor->getReport();
-    //Serial.print("traffic: ");
-    //Serial.println(newReport.traffic);
-    //Serial.print("avgSpeed: ");
-    //Serial.println(newReport.avgSpeed);
-
+#ifdef DEBUG_REPORT_PUBLISH
+    DEBUG_OUT.println("New report that will be published:");
+    DEBUG_OUT.print("\ttraffic: ");
+    DEBUG_OUT.println(newReport.traffic);
+    DEBUG_OUT.print("\tavgSpeed: ");
+    DEBUG_OUT.println(newReport.avgSpeed);
+#endif
 
     // Publish the new produced report to backend.
     // If there's any error, print the error message to the debug output.

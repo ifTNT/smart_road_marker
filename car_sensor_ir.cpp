@@ -32,26 +32,34 @@ int CarSensorIR::init(){
 }
 
 int CarSensorIR::updateMeasure(){
-  // Calculate the new exponatial moving average.
+
+  // Read the amplitude of from-sensor
   int rawSensorVal = analogRead(_fromPin);
+  // Prevent the inverted value goes to infinity
   if(rawSensorVal<1){
     rawSensorVal = 1;
   }
+  // Calculate the new distance(inverted value) and exponatial moving average.
   float sensorDist = 1024.0/(float)rawSensorVal;
   float newFromEMV = _lpfAlpha*(float)sensorDist + (1-_lpfAlpha)*_fromEMV;
-  Serial.print("1100,0,");
-  Serial.print(newFromEMV);
-  Serial.print(",");
+
+  // Read the amplitude of to-sensor
   rawSensorVal = analogRead(_toPin);
+  // Prevent the inverted value goes to infinity
   if(rawSensorVal<1){
     rawSensorVal = 1;
   }
+  // Calculate the new distance(inverted value) and exponatial moving average.
   sensorDist = 1024.0/(float)rawSensorVal;
   float newToEMV = _lpfAlpha*(float)sensorDist + (1-_lpfAlpha)*_toEMV;
-  Serial.println(newToEMV);
-  // Serial.print("state");
-  // Serial.println(_state);
 
+#ifdef DEBUG_IR_SENSOR
+  // Print the filted data to debug serial
+  DEBUG_OUT.print("1100,0,");
+  DEBUG_OUT.print(newFromEMV);
+  DEBUG_OUT.print(",");
+  DEBUG_OUT.println(newToEMV);
+#endif
 
   switch(_state){
   // The empty state
@@ -78,12 +86,15 @@ int CarSensorIR::updateMeasure(){
       unsigned long long duration = millis()-_measureBeginTime;
       float totalSpeed = _currentReport.avgSpeed*_currentReport.traffic;
 
+      // Calculate the current speed and convert cm per ms to km per hour.
       float currentSpeed = _distance/duration*36.0f;
 
-      //Serial.print("Speed: ");
-      //Serial.println(currentSpeed);
+#ifdef DEBUG_IR_SPEED
+      Serial.print("The speed of the car: ");
+      Serial.println(currentSpeed);
+#endif
 
-      // Convert cm per ms to km per hr.
+      // Accumulate current speed to history speed.
       totalSpeed += currentSpeed;
       // Increase the car counter.
       _currentReport.traffic++;

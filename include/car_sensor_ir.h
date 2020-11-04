@@ -25,7 +25,7 @@ class CarSensorIR: public CarSensor{
    * The sixth parameter is distance, indicating the distance between two
    * sensors. Unit is centimeter.
    */
-  CarSensorIR(const uint8_t& fromPin, const uint8_t& toPin, int deadZone = 500, float lpfAplha = 0.05, float hasCarThld = 600.0, float distance = 9.0);
+  CarSensorIR(const uint8_t& fromPin, const uint8_t& toPin, int deadZone = 500, float lpfAplha = 0.05, float hasCarThld = 150.0, float distance = 9.0);
   int init();
   int updateMeasure();
   report_t getReport();
