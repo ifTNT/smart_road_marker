@@ -9,7 +9,7 @@
  */
 
 // The sensor that return the traffic and average speed data.
-CarSensor* carSensor = new CarSensorIR;
+CarSensor* carSensor = new CarSensorIR(A0, A1);
 
 // The reporter that transmit the produced report data to backend.
 Repoter* repoter = new ReporterBC20(Serial);
