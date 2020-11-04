@@ -34,15 +34,30 @@ int CarSensorIR::init(){
 int CarSensorIR::updateMeasure(){
   // Calculate the new exponatial moving average.
   int rawSensorVal = analogRead(_fromPin);
-  float newFromEMV = _lpfAlpha*(float)rawSensorVal + (1-_lpfAlpha)*_fromEMV;
+  if(rawSensorVal<1){
+    rawSensorVal = 1;
+  }
+  float sensorDist = 1024.0/(float)rawSensorVal;
+  float newFromEMV = _lpfAlpha*(float)sensorDist + (1-_lpfAlpha)*_fromEMV;
+  Serial.print("1100,0,");
+  Serial.print(newFromEMV);
+  Serial.print(",");
   rawSensorVal = analogRead(_toPin);
-  float newToEMV = _lpfAlpha*(float)rawSensorVal + (1-_lpfAlpha)*_toEMV;
-  
+  if(rawSensorVal<1){
+    rawSensorVal = 1;
+  }
+  sensorDist = 1024.0/(float)rawSensorVal;
+  float newToEMV = _lpfAlpha*(float)sensorDist + (1-_lpfAlpha)*_toEMV;
+  Serial.println(newToEMV);
+  // Serial.print("state");
+  // Serial.println(_state);
+
+
   switch(_state){
   // The empty state
   case 0:
     // If the last tick has no car and now there's a car on from-sensor
-    if(_fromEMV<_hasCarThld && newFromEMV>_hasCarThld){
+    if(_fromEMV>_hasCarThld && newFromEMV<_hasCarThld){
       // Change to measure state.
       _state = 1;
 
@@ -55,9 +70,25 @@ int CarSensorIR::updateMeasure(){
   // The measure state
   case 1:
     // If the last tick has no car and now there's a car on to-sensor
-    if(_toEMV<_hasCarThld && newToEMV>_hasCarThld){
+    if(_toEMV>_hasCarThld && newToEMV<_hasCarThld){
       // Change to wait state.
       _state = 2;
+
+      // Calculte the accumulated speed of the car.
+      unsigned long long duration = millis()-_measureBeginTime;
+      float totalSpeed = _currentReport.avgSpeed*_currentReport.traffic;
+
+      float currentSpeed = _distance/duration*36.0f;
+
+      //Serial.print("Speed: ");
+      //Serial.println(currentSpeed);
+
+      // Convert cm per ms to km per hr.
+      totalSpeed += currentSpeed;
+      // Increase the car counter.
+      _currentReport.traffic++;
+      // Write back the new average speed.
+      _currentReport.avgSpeed = totalSpeed/_currentReport.traffic;
     }
 
   break;
@@ -66,19 +97,9 @@ int CarSensorIR::updateMeasure(){
   case 2:
     // If the last tick has car and now has no car on to-sensor,
     // change to dead-zone state.
-    if(_toEMV>_hasCarThld && newToEMV<_hasCarThld){
+    if(_toEMV<_hasCarThld && newToEMV>_hasCarThld){
       _state = 3;
-
-      // Calculte the accumulated speed of the car.
-      unsigned long long duration = millis()-_measureBeginTime;
-      float totalSpeed = _currentReport.avgSpeed*_currentReport.traffic;
-      // Convert cm per ms to km per hr.
-      totalSpeed += _distance/duration*36.0f;
-      // Increase the car counter.
-      _currentReport.traffic++;
-      // Write back the new average speed.
-      _currentReport.avgSpeed = totalSpeed/_currentReport.traffic;
-
+      _waitEndTime = millis();
     }
   break;
 

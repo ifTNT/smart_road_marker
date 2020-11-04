@@ -13,7 +13,9 @@
 
 // The expeted duration between report publishment
 // Unit: miliseconds
-#define REPORT_DURATION 30000l
+// #define REPORT_DURATION 30000l
+#define REPORT_DURATION 5000l
+
 
 // Define the debug output macro to decopule the debug purpose
 // from the serial port object.
