@@ -15,8 +15,8 @@ CarSensor* carSensor = new CarSensorIR(A4, A5);
 Repoter* repoter = new ReporterBC20(Serial);
 
 // Assign the software serial port for debugging purpose
-#define DEBUG_SERIAL_RX_PIN 29
-#define DEBUG_SERIAL_TX_PIN 30
+#define DEBUG_SERIAL_RX_PIN 8
+#define DEBUG_SERIAL_TX_PIN 9
 SoftwareSerial DebugSoftwareSerial=
     SoftwareSerial(DEBUG_SERIAL_RX_PIN, DEBUG_SERIAL_TX_PIN);
 

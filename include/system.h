@@ -22,7 +22,9 @@
 #define DEBUG_OUT DebugSoftwareSerial
 
 // The buadrate that be used in debug serial port.
-#define DEBUG_SERIAL_BUADRATE 115200
+#define DEBUG_SERIAL_BUADRATE 9600
+
+#define DEBUG_REPORT_PUBLISH
 
 /* ============================
  *  External defined varibles

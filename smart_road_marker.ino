@@ -4,6 +4,9 @@ void setup() {
   // Initialize the debugging serial port.
   DEBUG_OUT.begin(DEBUG_SERIAL_BUADRATE);
 
+  DEBUG_OUT.println("Smart road marker");
+  DEBUG_OUT.println("==================");
+
   // Initialize the car-sensor and the reporter.
   // If there's any error, print the error message to the debug output.
   if((err = carSensor->init()) != 0){
