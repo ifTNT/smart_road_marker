@@ -55,7 +55,7 @@ int ReporterBC20::init(){
 #endif
   while(1){
     _port.println("AT+CGPADDR?");
-    if((err=_waitForSerial("OK", 1000))!=0){
+    if((err=_waitForSerial("+CGPADD", 1000))!=0){
 #ifdef DEBUG_BC20
       DEBUG_OUT.print(".");
 #endif
@@ -65,10 +65,10 @@ int ReporterBC20::init(){
 #endif
       break;
     }
-
-    // Disconnect any potential MQTT socket
-    _disconnectMQTT();
   }
+
+  // Disconnect any potential MQTT socket
+  _disconnectMQTT();
 
   return 0;
 }
@@ -82,7 +82,7 @@ int ReporterBC20::publish(report_t report){
   DEBUG_OUT.print("[BC20] ");
   DEBUG_OUT.println("Send MQTT socket creation command.");
 #endif
-  if((err=_waitForSerial("+QMTOPEN: 0,0", 1000))!=0){
+  if((err=_waitForSerial("+QMTOPEN: 0,0", 2000))!=0){
 #ifdef DEBUG_BC20
     DEBUG_OUT.print("[BC20] ");
     DEBUG_OUT.print("Opening MQTT socket failed. The error message: ");
@@ -101,7 +101,7 @@ int ReporterBC20::publish(report_t report){
   DEBUG_OUT.print("[BC20] ");
   DEBUG_OUT.println("Send MQTT connection command.");
 #endif
-  if((err=_waitForSerial("+QMTCONN: 0,0,0", 1000))!=0){
+  if((err=_waitForSerial("+QMTCONN: 0,0,0", 2000))!=0){
 #ifdef DEBUG_BC20
     DEBUG_OUT.print("[BC20] ");
     DEBUG_OUT.print("Sending MQTT connection message failed. The error message: ");
@@ -113,15 +113,21 @@ int ReporterBC20::publish(report_t report){
 
   // Publish specified report via MQTT
   _port.print("AT+QMTPUB=0,0,0,0,\"/v1/device/24991697058/rawdata\",\"[{'id': 'speed','value': ['");
-  _port.print(report.avgSpeed);
+  if(report.traffic==0){
+    // Maximum speed
+    _port.print(100);
+  }else{
+    _port.print(report.avgSpeed);
+  }
   _port.print("']},{'id': 'cars','value':['");
+
   _port.print(report.traffic);
   _port.println("']}]\"");
 #ifdef DEBUG_BC20
   DEBUG_OUT.print("[BC20] ");
   DEBUG_OUT.println("Send MQTT publish command.");
 #endif
-  if((err=_waitForSerial("+QMTPUB: 0,0,0", 1000))!=0){
+  if((err=_waitForSerial("+QMTPUB: 0,0,0", 2000))!=0){
 #ifdef DEBUG_BC20
     DEBUG_OUT.print("[BC20] ");
     DEBUG_OUT.print("Publish report failed. The error message: ");
@@ -167,7 +173,7 @@ int ReporterBC20::_waitForSerial(String patten, const unsigned long long timeout
   if(resultFromSerial.indexOf(patten) != -1){
     returnCode = 0;
   }
-#ifdef DEBUG_BC20_SERIAL
+#ifdef DEBUG_BC20
     DEBUG_OUT.print("[BC20] ");
     DEBUG_OUT.print("Received response: ");
     DEBUG_OUT.println(resultFromSerial);
