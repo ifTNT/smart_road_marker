@@ -7,6 +7,8 @@ void setup() {
   DEBUG_OUT.println("Smart road marker");
   DEBUG_OUT.println("==================");
 
+  pinMode(LED_BUILTIN, OUTPUT);
+
   // Initialize the car-sensor and the reporter.
   // If there's any error, print the error message to the debug output.
   if((err = carSensor->init()) != 0){
@@ -37,6 +39,8 @@ void loop() {
   // Overflow of millis() is about 50-days, so it's not be considerd here.
   if(millis()-lastPublishTime >= REPORT_DURATION){
     
+    digitalWrite(LED_BUILTIN, HIGH);
+
     // Get a fresh produced report summary from the car-sensor.
     report_t newReport = carSensor->getReport();
 #ifdef DEBUG_REPORT_PUBLISH
@@ -59,6 +63,8 @@ void loop() {
 
     // Update the last report publishing time to current system time.
     lastPublishTime = millis();
+
+    digitalWrite(LED_BUILTIN, LOW);
   }
 
 }

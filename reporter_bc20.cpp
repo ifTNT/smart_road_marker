@@ -82,7 +82,7 @@ int ReporterBC20::publish(report_t report){
   DEBUG_OUT.print("[BC20] ");
   DEBUG_OUT.println("Send MQTT socket creation command.");
 #endif
-  if((err=_waitForSerial("+QMTOPEN: 0,0", 2000))!=0){
+  if((err=_waitForSerial("+QMTOPEN: 0,0", 1000))!=0){
 #ifdef DEBUG_BC20
     DEBUG_OUT.print("[BC20] ");
     DEBUG_OUT.print("Opening MQTT socket failed. The error message: ");
@@ -101,14 +101,14 @@ int ReporterBC20::publish(report_t report){
   DEBUG_OUT.print("[BC20] ");
   DEBUG_OUT.println("Send MQTT connection command.");
 #endif
-  if((err=_waitForSerial("+QMTCONN: 0,0,0", 2000))!=0){
+  if((err=_waitForSerial("+QMTCONN: 0,0,0", 500))!=0){
 #ifdef DEBUG_BC20
     DEBUG_OUT.print("[BC20] ");
     DEBUG_OUT.print("Sending MQTT connection message failed. The error message: ");
     DEBUG_OUT.println(getErrMessage(err));
 #endif
-    _disconnectMQTT();
-    return err;
+    //_disconnectMQTT();
+    //return err;
   }
 
   // Publish specified report via MQTT
@@ -127,14 +127,14 @@ int ReporterBC20::publish(report_t report){
   DEBUG_OUT.print("[BC20] ");
   DEBUG_OUT.println("Send MQTT publish command.");
 #endif
-  if((err=_waitForSerial("+QMTPUB: 0,0,0", 2000))!=0){
+  if((err=_waitForSerial("+QMTPUB: 0,0,0", 500))!=0){
 #ifdef DEBUG_BC20
     DEBUG_OUT.print("[BC20] ");
     DEBUG_OUT.print("Publish report failed. The error message: ");
     DEBUG_OUT.println(getErrMessage(err));
 #endif
-    _disconnectMQTT();
-    return err;
+    //_disconnectMQTT();
+    //return err;
   }
 
   _disconnectMQTT();
@@ -156,7 +156,7 @@ void ReporterBC20::_disconnectMQTT(){
   DEBUG_OUT.print("[BC20] ");
   DEBUG_OUT.println("Send MQTT disconnection command.");
 #endif
-  if((err=_waitForSerial("+QMTDISC: 0,0", 1000))!=0){
+  if((err=_waitForSerial("+QMTDISC: 0,0", 500))!=0){
 #ifdef DEBUG_BC20
     DEBUG_OUT.print("[BC20] ");
     DEBUG_OUT.print("Close connection failed. The error message: ");
